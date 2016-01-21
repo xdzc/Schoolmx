@@ -1,0 +1,12 @@
+# IDE files
+.idea/
+
+# Logs
+*.log
+
+# Grunt intermediate storage
+.grunt
+
+# Dependency directory
+node_modules
+bower_components
