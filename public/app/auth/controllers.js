@@ -51,7 +51,7 @@
 
             forgotVm.progressMode = "indeterminate";
 
-            $http.post(mxApi.URL + authApi.RETRIEVE_PASSWORD_URL, forgotVm.credentials)
+            $http.post(mxApi.URL + authApi.BASE_URL +  authApi.RETRIEVE_PASSWORD_URL, forgotVm.credentials)
                 .then(function (response) {
 
                     $mdToast.show(
@@ -90,7 +90,7 @@
 
             resetVm.credentials.token = $stateParams.token;
 
-            $http.post(mxApi.URL + authApi.RESET_PASSWORD_URL, resetVm.credentials)
+            $http.post(mxApi.URL + authApi.BASE_URL + authApi.RESET_PASSWORD_URL, resetVm.credentials)
                 .then(function (response) {
 
                     /**

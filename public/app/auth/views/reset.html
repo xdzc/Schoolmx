@@ -44,7 +44,7 @@
                 </md-input-container>
 
                 <md-input-container layout="row" layout-align="end center">
-                    <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="[[resetVm.progressMode]]"></md-progress-circular>
+                    <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="{{resetVm.progressMode}}"></md-progress-circular>
                     <md-button type="submit" class="md-raised md-hue-2" ng-class="{'md-primary' : !resetVm.resetForm.$invalid}">
                         <i class="fa fa-refresh"></i>
                         Reset

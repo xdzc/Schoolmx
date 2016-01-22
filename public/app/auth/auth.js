@@ -4,6 +4,7 @@
     angular
         .module('mxApp.auth', ['mxApp.auth.controllers'])
         .constant('authApi', {
+            BASE_URL: '/auth',
             RETRIEVE_PASSWORD_URL: '/retrieve-password',
             RESET_PASSWORD_URL: '/reset-password'
         });

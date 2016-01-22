@@ -8,19 +8,19 @@
         ])
         .config(config)
         .constant('mxApi', {
-            URL: 'http://localhost/schoolmx.api/public/api'
+            URL: 'http://localhost:3000'
         }).run(runBlock);
 
-    config.$inject = ['$interpolateProvider', 'mxApi',
+    config.$inject = ['$interpolateProvider', 'mxApi', 'authApi',
         '$urlRouterProvider', '$locationProvider', '$authProvider', '$mdThemingProvider'];
 
-    function config($interpolateProvider, mxApi,
+    function config($interpolateProvider, mxApi, authApi,
                     $urlRouterProvider, $locationProvider, $authProvider, $mdThemingProvider) {
 
         //$interpolateProvider.startSymbol('[[');
         //$interpolateProvider.endSymbol(']]');
 
-        $authProvider.loginUrl = '/authenticate';
+        $authProvider.loginUrl = authApi.BASE_URL + '/authenticate';
         $authProvider.baseUrl = mxApi.URL;
         $authProvider.tokenPrefix = 'smx';
         $authProvider.tokenName = 'token';

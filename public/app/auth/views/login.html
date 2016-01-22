@@ -47,7 +47,7 @@
                 <!--</md-checkbox>-->
 
                 <md-input-container layout="row" layout-align="end center">
-                        <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="[[loginVm.progressMode]]"></md-progress-circular>
+                        <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="{{loginVm.progressMode}}"></md-progress-circular>
                         <md-button type="submit" class="md-raised" ng-class="{'md-primary' : !loginVm.loginForm.$invalid}">
                             <i class="fa fa-key"></i>
                             Login
