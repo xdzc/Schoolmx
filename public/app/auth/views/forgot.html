@@ -1,0 +1,48 @@
+<form name="forgotVm.forgotForm" ng-submit="forgotVm.forgotForm.$valid && forgotVm.processReset()" novalidate>
+
+    <md-card class="auth"  layout-align="center" layout-xs="column">
+        <!--<md-card-title>-->
+            <!--<md-card-title-text>-->
+                <!--<span class="md-headline">Retrieve Password</span>-->
+                <!--<span class="md-subhead">Please enter your E-mail to receive instructions.</span>-->
+                <!--<md-divider></md-divider>-->
+            <!--</md-card-title-text>-->
+        <!--</md-card-title>-->
+
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h3>Retrieve Password</h3>
+
+                <span flex></span>
+                <md-button ui-sref="auth_login">
+                    <i class="fa fa-chevron-circle-left"></i>
+                    Login
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-card-content>
+
+            <div layout="column" layout-margin>
+
+                <md-input-container>
+                    <label>Email</label>
+                    <input name="email" type="email" ng-model="forgotVm.credentials.email"
+                           ng-required="true" />
+                    <div ng-messages="forgotVm.forgotForm.$error">
+                        <div ng-message="required, email">Please provide your email to receive instructions.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container layout="row" layout-align="end center">
+                    <md-progress-circular md-diameter="30%" md-mode="[[forgotVm.progressMode]]"></md-progress-circular>
+                    <md-button type="submit" class="md-raised" ng-class="{'md-accent' : !forgotVm.forgotForm.$invalid}">
+                        <i class="fa fa-lightbulb-o"></i>
+                        Send me!
+                    </md-button>
+                </md-input-container>
+            </div>
+
+        </md-card-content>
+    </md-card>
+</form>

@@ -1,5 +1,26 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  div(layout-fill)
+    div(data-ui-view, layout-fill)
+
+  script(src="angular/angular.js")
+  script(src="angular-aria/angular-aria.js")
+  script(src="angular-animate/angular-animate.js")
+  script(src="angular-messages/angular-messages.js")
+  script(src="angular-material/angular-material.js")
+  script(src="angular-translate/angular-translate.js")
+  script(src="angular-ui-router/release/angular-ui-router.js")
+  script(src="satellizer/satellizer.js")
+    
+  script(src="app/app.js")
+  script(src="app/auth/auth.js")
+  script(src="app/auth/controllers.js")
+  script(src="app/overview/overview.js")
+  script(src="app/overview/controllers.js")
+
+  script(src="app/shared/shared.js")
+  script(src="app/shared/controllers.js")
+  script(src="app/shared/directives.js")
+  script(src="app/shared/services.js")

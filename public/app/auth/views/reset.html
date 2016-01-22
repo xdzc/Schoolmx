@@ -1,0 +1,57 @@
+<form name="resetVm.resetForm" ng-submit="resetVm.resetForm.$valid && resetVm.processReset()"  novalidate>
+
+    <md-card class="auth" layout-align="center" layout-xs="column">
+        <md-toolbar class="md-primary md-hue-2">
+            <div class="md-toolbar-tools">
+                <h3>Reset Password</h3>
+
+                <span flex></span>
+                <md-button ui-sref="auth_login">
+                    <i class="fa fa-chevron-circle-left"></i>
+                    Login
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-card-content>
+
+            <div layout="column" layout-margin>
+
+                <md-input-container>
+                    <label>Email</label>
+                    <input name="email" type="email" ng-model="resetVm.credentials.email"
+                           ng-required="true" />
+                    <div ng-messages="resetVm.resetForm.$error">
+                        <div ng-message="required, email">Please provide your email.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input name="password" type="password" ng-model="resetVm.credentials.password" ng-minlength="4"
+                           ng-maxlength="128" ng-required="true" />
+                    <div ng-messages="resetVm.resetForm.$error">
+                        <div ng-message="required, maxlength, minlength">Please provide your password.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>Password Confirmation</label>
+                    <input name="password_confirmation" type="password" ng-model="resetVm.credentials.password_confirmation" ng-minlength="4"
+                           ng-maxlength="128" ng-required="true" />
+                    <div ng-messages="resetVm.resetForm.$error">
+                        <div ng-message="required, maxlength, minlength">Please provide your password confirmation.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container layout="row" layout-align="end center">
+                    <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="[[resetVm.progressMode]]"></md-progress-circular>
+                    <md-button type="submit" class="md-raised md-hue-2" ng-class="{'md-primary' : !resetVm.resetForm.$invalid}">
+                        <i class="fa fa-refresh"></i>
+                        Reset
+                    </md-button>
+                </md-input-container>
+            </div>
+
+        </md-card-content>
+    </md-card>
+</form>
