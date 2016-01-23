@@ -33,6 +33,17 @@ db.once('open', function() {
   });
 });
 
+/**
+ * App information.
+ */
+app.locals.title = 'SchoolMx';
+app.locals.version = '0.0.1';
+app.locals.email = 'schoolmx@bitrient.com';
+app.locals.address = {
+  lineOne: 'Bitrient Services, Jos 930281',
+  lineTwo: 'Plateau State, Nigeria.'
+};
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

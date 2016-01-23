@@ -76,13 +76,13 @@ router.post('/retrieve-password', function (request, response) {
                     var mailOptions = {
                         'TemplateID': 364921,
                         'To': user.email,
-                        'From': 'schoolmx@bitrient.com',
+                        'From': request.app.locals.email,
                         'TemplateModel': {
-                            'product_name': 'SchoolMx',
+                            'product_name': request.app.locals.title,
                             'name': user.name.simple,
                             'action_url': request.headers.host + '/auth/reset-password/' + token,
-                            'product_address_line1': 'Bitrient Services, Jos 930281',
-                            'product_address_line2': 'Plateau State, Nigeria.'
+                            'product_address_line1': request.app.locals.address.lineOne,
+                            'product_address_line2': request.app.locals.address.lineTwo
                         }
                     };
 
@@ -131,13 +131,13 @@ router.post('/reset-password/', function (request, response) {
                     var mailOptions = {
                         'TemplateId': 365402,
                         'To': user.email,
-                        'From': 'schoolmx@bitrient.com',
+                        'From': request.app.locals.email,
                         'Subject': 'Password Change Confirmation',
                         'TemplateModel': {
-                            'product_name': 'SchoolMx',
+                            'product_name': request.app.locals.title,
                             'name': user.name.simple,
-                            'product_address_line1': 'Bitrient Services, Jos 930281',
-                            'product_address_line2': 'Plateau State, Nigeria.'
+                            'product_address_line1': request.app.locals.address.lineOne,
+                            'product_address_line2': request.app.locals.address.lineTwo
                         }
                     };
 
