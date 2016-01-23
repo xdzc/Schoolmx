@@ -10,3 +10,9 @@ exports.firstError = function (errorObj) {
 
     return info[0];
 }
+
+exports.serverError = function (response, error) {
+    // TODO: log server errors to file.
+    console.error('Error: ' + error);
+    return response.status(500).json('Oops! Something went wrong. Please try again.');
+}

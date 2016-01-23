@@ -27,7 +27,7 @@ router.post('/authenticate', function(request, response) {
 
     User.findOne({email: _email}, function (error, user) {
         if (error) {
-            return response.status(500).json("Error: " + error);
+            return errorHelper.serverError(response, error);
         }
 
         if (user) {
@@ -58,7 +58,7 @@ router.post('/retrieve-password', function (request, response) {
 
     User.findOne({email: _email}, function (error, user) {
         if (error) {
-            return response.status(500).json('Error: ' + error);
+            return errorHelper.serverError(response, error);
         }
 
         if (user) {
@@ -87,8 +87,9 @@ router.post('/retrieve-password', function (request, response) {
                     };
 
                     emailClient.sendEmailWithTemplate(mailOptions, function (error) {
-                        // TODO: log key errors.
-                        if (error) return console.log('Error: ' + error.message);
+                        if (error) {
+                            return errorHelper.serverError(response, error.message);
+                        }
 
                         return response.json('We\'ve sent further instructions to ' + user.email +
                             ' if it exist on our system.');
@@ -118,7 +119,9 @@ router.post('/reset-password/', function (request, response) {
 
     User.findOne({'resetPassword.token': _token, 'email': _email, 'resetPassword.expiration': {$gt: Date.now()}},
         function (error, user) {
-            if (error) return console.log('Error: ' + error);
+            if (error) {
+                return errorHelper.serverError(response, error);
+            }
 
             if (user) {
                 user.password = user.generateHash(_password);
@@ -126,13 +129,14 @@ router.post('/reset-password/', function (request, response) {
                 user.resetPassword.expiration = undefined;
 
                 user.save(function (error) {
-                    if (error) return console.error('Error: ' + error);
+                    if (error) {
+                        return errorHelper.serverError(response, error);
+                    }
 
                     var mailOptions = {
                         'TemplateId': 365402,
                         'To': user.email,
                         'From': request.app.locals.email,
-                        'Subject': 'Password Change Confirmation',
                         'TemplateModel': {
                             'product_name': request.app.locals.title,
                             'name': user.name.simple,
@@ -142,7 +146,9 @@ router.post('/reset-password/', function (request, response) {
                     };
 
                     emailClient.sendEmailWithTemplate(mailOptions, function (error) {
-                        if (error) return console.error('Error: ' + error.message);
+                        if (error) {
+                            return errorHelper.serverError(response, error.message);
+                        }
 
                         return response.json(user.token);
                     });
