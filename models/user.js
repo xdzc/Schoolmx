@@ -41,7 +41,7 @@ UserSchema.virtual('name.full').get(function () {
 });
 
 UserSchema.virtual('name.simple').get(function () {
-    return this.name.last + ', ' + this.name.first;
+    return this.name.first + ' ' + this.name.last;
 });
 
 UserSchema.virtual('age').get(function () {
