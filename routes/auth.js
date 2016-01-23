@@ -102,7 +102,55 @@ router.post('/retrieve-password', function (request, response) {
 });
 
 router.post('/reset-password/', function (request, response) {
-    
+    var validation = new Validator(request.body, {
+        email: 'required|email',
+        password: 'required|confirmed',
+        token: 'required'
+    });
+
+    if (validation.fails()) {
+        return response.status(422).json(errorHelper.firstError(validation.errors));
+    }
+
+    var _token = request.body.token;
+    var _password = request.body.password;
+    var _email = request.body.email;
+
+    User.findOne({'resetPassword.token': _token, 'email': _email, 'resetPassword.expiration': {$gt: Date.now()}},
+        function (error, user) {
+            if (error) return console.log('Error: ' + error);
+
+            if (user) {
+                user.password = user.generateHash(_password);
+                user.resetPassword.token = undefined;
+                user.resetPassword.expiration = undefined;
+
+                user.save(function (error) {
+                    if (error) return console.error('Error: ' + error);
+
+                    var mailOptions = {
+                        'TemplateId': 365402,
+                        'To': user.email,
+                        'From': 'schoolmx@bitrient.com',
+                        'Subject': 'Password Change Confirmation',
+                        'TemplateModel': {
+                            'product_name': 'SchoolMx',
+                            'name': user.name.simple,
+                            'product_address_line1': 'Bitrient Services, Jos 930281',
+                            'product_address_line2': 'Plateau State, Nigeria.'
+                        }
+                    };
+
+                    emailClient.sendEmailWithTemplate(mailOptions, function (error) {
+                        if (error) return console.error('Error: ' + error.message);
+
+                        return response.json(user.token);
+                    });
+                });
+            } else {
+                return response.status(401).json('Password reset token is invalid or has expired.');
+            }
+    });
 });
 
 module.exports = router;
