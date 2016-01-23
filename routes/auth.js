@@ -13,7 +13,7 @@ router.post('/authenticate', function(request, response) {
 
     var validation = new Validator(request.body, {
         email: 'required|email',
-        password: 'required|min:4|max:5'
+        password: 'required|min:4|max:128'
     });
 
 
