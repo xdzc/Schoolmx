@@ -5,16 +5,15 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     helmet = require('helmet'),
-    cors = require('cors');
-    //validator = require('express-validator');
+    cors = require('cors'),
+    config = require('./util/config');
 
 /**
  * Database connection
  */
-var mongoose = require('mongoose'),
-    uriString = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/schoolmx';
+var mongoose = require('mongoose');
 
-mongoose.connect(uriString);
+mongoose.connect(config.databaseUri.mongodb);
 var db = mongoose.connection;
 
 var routes = require('./routes/index'),
@@ -36,13 +35,10 @@ db.once('open', function() {
 /**
  * App information.
  */
-app.locals.title = 'SchoolMx';
-app.locals.version = '0.0.1';
-app.locals.email = 'schoolmx@bitrient.com';
-app.locals.address = {
-  lineOne: 'Bitrient Services, Jos 930281',
-  lineTwo: 'Plateau State, Nigeria.'
-};
+app.locals.title = config.app.name;
+app.locals.version = config.app.version;
+app.locals.email = config.app.email;
+app.locals.address = config.address;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

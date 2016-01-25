@@ -2,12 +2,27 @@ var express = require('express'),
     router = express.Router(),
     crypto = require('crypto'),
     postmark = require('postmark'),
+    ms = require('ms'),
     Validator = require('validatorjs');
 
-var errorHelper = require('../util/helpers');
+var errorHelper = require('../util/helpers'),
+    config = require('../util/config'),
+    jwt = require('jsonwebtoken');
+
 var emailClient = new postmark.Client("8f4b371b-88c7-4c0b-aa20-45e0203c2c6e");
 
 var User = require('../models/user');
+
+var makeToken = function (payload) {
+    var options = {
+        expiresIn: config.auth.expiration,
+        audience: config.auth.audience,
+        issuer: config.auth.issuer
+    };
+    var token = jwt.sign(payload, config.auth.secret, options);
+
+    return 'JWT ' + token; // Prefixed for reasons known only to PassportJS.
+};
 
 router.post('/authenticate', function(request, response) {
 
@@ -36,7 +51,7 @@ router.post('/authenticate', function(request, response) {
                     return response.status(401).json('Inactive account. Please contact admin.');
                 }
 
-                return response.json(user.token)
+                return response.json(makeToken(user));
             }
         }
 
@@ -68,7 +83,7 @@ router.post('/retrieve-password', function (request, response) {
                 var token = buffer.toString('hex');
 
                 user.resetPassword.token = token;
-                user.resetPassword.expiration = Date.now() + 1800000; //30 min.
+                user.resetPassword.expiration = Date.now() + ms('30m');//1800000; //30 min.
 
                 user.save(function (error, user) {
                     if (error) return response.status(500).json('Error: ' + error);
@@ -150,7 +165,7 @@ router.post('/reset-password/', function (request, response) {
                             return errorHelper.serverError(response, error.message);
                         }
 
-                        return response.json(user.token);
+                        return response.json(makeToken(user));
                     });
                 });
             } else {
