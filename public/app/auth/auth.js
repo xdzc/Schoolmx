@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('mxApp.auth', ['mxApp.auth.controllers'])
+        .module('mxApp.auth', ['mxApp.auth.controllers', 'mxApp.auth.directives'])
         .constant('authApi', {
             BASE_URL: '/auth',
             RETRIEVE_PASSWORD_URL: '/retrieve-password',

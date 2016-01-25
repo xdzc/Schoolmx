@@ -37,9 +37,9 @@
                 <md-input-container>
                     <label>Password Confirmation</label>
                     <input name="password_confirmation" type="password" ng-model="resetVm.credentials.password_confirmation" ng-minlength="4"
-                           ng-maxlength="128" ng-required="true" />
+                           ng-maxlength="128" ng-required="true" compare-to="resetVm.credentials.password" />
                     <div ng-messages="resetVm.resetForm.$error">
-                        <div ng-message="required, maxlength, minlength">Please provide your password confirmation.</div>
+                        <div ng-message="required, maxlength, minlength, compareTo">Please provide your password confirmation.</div>
                     </div>
                 </md-input-container>
 
