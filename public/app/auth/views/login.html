@@ -42,12 +42,11 @@
                     </div>
                 </md-input-container>
 
-                <!--<md-checkbox ng-model="loginVm.credentials.remember" aria-label="Remember me?">-->
-                    <!--Remember me?-->
-                <!--</md-checkbox>-->
+                <md-checkbox ng-model="loginVm.credentials.remember" aria-label="Remember me?">
+                    <span class="md-body-1">keep me signed in for two weeks.</span>
+                </md-checkbox>
 
                 <md-input-container layout="row" layout-align="end center">
-                        <md-progress-circular md-diameter="30%" class="md-warn md-hue-2" md-mode="{{loginVm.progressMode}}"></md-progress-circular>
                         <md-button type="submit" class="md-raised" ng-class="{'md-primary' : !loginVm.loginForm.$invalid}">
                             <i class="fa fa-key"></i>
                             Login

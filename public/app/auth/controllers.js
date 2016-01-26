@@ -7,121 +7,43 @@
         .controller('ForgotPasswordController', ForgotPasswordController)
         .controller('ResetPasswordController', ResetPasswordController);
 
-    LoginController.$inject = ['$state', '$auth', '$mdToast'];
-    function LoginController($state, $auth, $mdToast) {
+    LoginController.$inject = ['authService'];
+    function LoginController(authService) {
 
         /* jshint validthis: true */
         var loginVm = this;
 
-        loginVm.progressMode = "";
-
         loginVm.processLogin = function () {
 
-            loginVm.progressMode = "indeterminate";
-
-
-            $auth.login(loginVm.credentials)
-                .then(function (response) {
-                    $state.go('auth_reset');
-                }).catch(function (response) {
-
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent(response.data)
-                        .position('top right')
-                        .theme('error-toast')
-                        .hideDelay(3000)
-                );
-            }).finally(function () {
-                loginVm.progressMode = "";
-            });
+            authService.processLogin(loginVm.credentials);
         };
 
     }
 
-    ForgotPasswordController.$inject = ['$http', 'mxApi', 'authApi', '$mdToast'];
-    function ForgotPasswordController($http, mxApi, authApi, $mdToast) {
+    ForgotPasswordController.$inject = ['authService'];
+    function ForgotPasswordController(authService) {
 
         /* jshint validthis: true */
         var forgotVm = this;
 
-        forgotVm.progressMode = "";
-
         forgotVm.processReset = function() {
 
-            forgotVm.progressMode = "indeterminate";
-
-            $http.post(mxApi.URL + authApi.BASE_URL +  authApi.RETRIEVE_PASSWORD_URL, forgotVm.credentials)
-                .then(function (response) {
-
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent(response.data)
-                            .position('top right')
-                            .theme('success-toast')
-                            .hideDelay(4000)
-                    );
-                }).catch(function (response) {
-
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent(response.data)
-                        .position('top right')
-                        .theme('error-toast')
-                        .hideDelay(3000)
-                );
-            }).finally(function () {
-                forgotVm.progressMode = "";
-            })
+            authService.processRetrieve(forgotVm.credentials);
         };
 
     }
 
-    ResetPasswordController.$inject = ['$http', 'mxApi', 'authApi', '$mdToast', '$stateParams', '$auth'];
-    function ResetPasswordController ($http, mxApi, authApi, $mdToast, $stateParams, $auth) {
+    ResetPasswordController.$inject = ['$stateParams', 'authService'];
+    function ResetPasswordController ($stateParams, authService) {
 
         /* jshint validthis: true */
         var resetVm = this;
 
-        resetVm.progressMode = "";
-
         resetVm.processReset = function () {
-            resetVm.progressMode = "indeterminate";
 
             resetVm.credentials.token = $stateParams.token;
 
-            $http.post(mxApi.URL + authApi.BASE_URL + authApi.RESET_PASSWORD_URL, resetVm.credentials)
-                .then(function (response) {
-
-                    /**
-                     * Response.data is the authentication token. When users clicks to return to login page, he is
-                     * automatically redirected because of this settings (setToken).
-                     */
-                    $auth.setToken(response.data);
-
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent('Your password has been changed, please login.')
-                            .position('top right')
-                            .theme('success-toast')
-                            .hideDelay(4000)
-                    );
-                })
-                .catch(function (response) {
-
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent(response.data)
-                            .position('top right')
-                            .theme('error-toast')
-                            .hideDelay(3000)
-                    );
-                })
-                .finally(function () {
-                    resetVm.progressMode = "";
-
-            });
-
+            authService.processReset(resetVm.credentials);
         };
     }
 })();

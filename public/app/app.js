@@ -4,7 +4,8 @@
     angular
         .module('mxApp', [
             'ui.router', 'mxApp.auth', 'mxApp.overview', 'ngMaterial',
-            'satellizer', 'ngMessages', 'mxApp.shared'
+            'satellizer', 'ngMessages', 'mxApp.shared', 'angular-jwt',
+            'ngProgress'
         ])
         .config(config)
         .constant('mxApi', {
@@ -24,6 +25,7 @@
         $authProvider.baseUrl = mxApi.URL;
         $authProvider.tokenPrefix = 'smx';
         $authProvider.tokenName = 'token';
+        $authProvider.storageType = 'sessionStorage';
 
         $urlRouterProvider.otherwise('/auth/login');
 
