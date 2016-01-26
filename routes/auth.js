@@ -19,7 +19,8 @@ var makeToken = function (payload) {
         audience: config.auth.audience,
         issuer: config.auth.issuer
     };
-    var token = jwt.sign(payload, config.auth.secret, options);
+    //called to Object to fix issue after decoding token and payload is a _doc object;
+    var token = jwt.sign(payload.toObject({virtuals: true}), config.auth.secret, options);
 
     return 'JWT ' + token; // Prefixed for reasons known only to PassportJS.
 };
@@ -51,7 +52,7 @@ router.post('/authenticate', function(request, response) {
                     return response.status(401).json('Inactive account. Please contact admin.');
                 }
 
-                return response.json(makeToken(user));
+                return response.json({token: makeToken(user)});
             }
         }
 
@@ -165,7 +166,7 @@ router.post('/reset-password/', function (request, response) {
                             return errorHelper.serverError(response, error.message);
                         }
 
-                        return response.json(makeToken(user));
+                        return response.json({token: makeToken(user)});
                     });
                 });
             } else {
