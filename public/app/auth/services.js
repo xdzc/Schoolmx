@@ -6,16 +6,17 @@
         .factory('authService', authService)
         .factory('notificationService', notificationService);
 
-    userService.$inject = ['jwtHelper'];
-    function userService(jwtHelper) {
+    userService.$inject = ['_', '$auth'];
+    function userService(_, $auth) {
         return {
             user: {},
-            fromToken: function (token) {
-                var _token = token.split(' ');
-                this.user = jwtHelper.decodeToken(_token[1]);
-            },
             isAuthed: function () {
                 return Math.round(new Date().getTime() / 1000) <= this.user.exp;
+            },
+            init: function () {
+                if (_.isEmpty(this.user)) {
+                    this.user= $auth.getPayload();
+                }
             }
         }
     }
@@ -39,10 +40,9 @@
                     .then(function (response) {
 
                         notificationService.progress.end();
-                        notificationService.success(response.data.token);
-                        userService.fromToken(response.data.token);
+                        userService.init();
                         // Redirect to dashboard.
-                        $state.go('auth_reset');
+                        $state.go('overview');
                     }).catch(function (response) {
 
                         notificationService.progress.abort();
@@ -59,7 +59,7 @@
              */
             setToken: function(token) {
                 $auth.setToken(token);
-                userService.fromToken(token);
+                userService.init();
             },
 
             /**
@@ -70,6 +70,7 @@
                 if ($auth.isAuthenticated()) {
                     userService.user = {};
                     $auth.logout();
+                    $state.go('auth_login');
                 }
             },
 
@@ -115,6 +116,9 @@
                         notificationService.progress.abort();
                         notificationService.error(response.data);
                     });
+            },
+            authenticated: function () {
+                return userService.isAuthed();
             }
         }
     }

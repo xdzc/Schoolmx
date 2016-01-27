@@ -4,7 +4,7 @@
     angular
         .module('mxApp', [
             'ui.router', 'mxApp.auth', 'mxApp.overview', 'ngMaterial',
-            'satellizer', 'ngMessages', 'mxApp.shared', 'angular-jwt',
+            'satellizer', 'ngMessages', 'mxApp.shared',
             'ngProgress'
         ])
         .config(config)
@@ -12,14 +12,11 @@
             URL: 'http://localhost:3000'
         }).run(runBlock);
 
-    config.$inject = ['$interpolateProvider', 'mxApi', 'authApi',
-        '$urlRouterProvider', '$locationProvider', '$authProvider', '$mdThemingProvider'];
+    config.$inject = ['mxApi', 'authApi', '$urlRouterProvider', '$locationProvider', '$authProvider',
+        '$mdThemingProvider'];
 
-    function config($interpolateProvider, mxApi, authApi,
-                    $urlRouterProvider, $locationProvider, $authProvider, $mdThemingProvider) {
-
-        //$interpolateProvider.startSymbol('[[');
-        //$interpolateProvider.endSymbol(']]');
+    function config(mxApi, authApi, $urlRouterProvider, $locationProvider, $authProvider,
+                    $mdThemingProvider) {
 
         $authProvider.loginUrl = authApi.BASE_URL + '/authenticate';
         $authProvider.baseUrl = mxApi.URL;
@@ -50,9 +47,13 @@
             .backgroundPalette('purple').dark();
     }
 
-    runBlock.$inject = ['$rootScope'];
-    function runBlock($rootScope) {
-        //$rootScope.title = $state.current.data.title;
+    runBlock.$inject = ['$rootScope', 'userService', '$state'];
+    function runBlock($rootScope, userService, $state) {
+
+        /**
+         * Re-initializes the userService in the event of a browser refresh.
+         */
+        userService.init();
         $rootScope.$on('$stateChangeSuccess', function (event, currentState, previousState) {
             $rootScope.title = currentState.data.title;
         });
