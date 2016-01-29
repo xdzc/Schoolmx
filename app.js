@@ -20,6 +20,13 @@ var routes = require('./routes/index'),
     auth = require('./routes/auth'),
     users = require('./routes/users');
 
+/**
+ * Initialize passport with JWT Strategy.
+ */
+var passport = require('passport'),
+    jwtStrategy = require('./util/authStrategy');
+jwtStrategy(passport);
+
 var app = express();
 
 db.on('error', console.error.bind(console, 'Connection Error.'));
