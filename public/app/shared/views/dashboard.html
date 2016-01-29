@@ -1,0 +1,51 @@
+<div layout="row" layout-fill>
+
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2"
+                md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left">
+
+        <md-content flex role="navigation" ss-style-color="{'background-color': 'primary.default'}">
+            <ss-sidenav flex menu="dashboardVm.menu"></ss-sidenav>
+        </md-content>
+    </md-sidenav>
+
+    <div flex layout="column" tabIndex="-1" role="main">
+
+        <md-toolbar layout="row" class="md-whiteframe-z1">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="dashboardVm.toggleMenu()" aria-label="Show User List" hide-gt-sm="">
+                    <md-icon md-font-set="material-icons">menu</md-icon>
+                </md-button>
+                <span>SchoolMx</span>
+                <span flex></span>
+                <md-button>
+                    <md-icon md-font-set="material-icons">email</md-icon>
+                    15
+                </md-button>
+                <md-menu>
+                    <md-button ng-click="$mdOpenMenu($event)" aria-label="Open User Menu">
+                        <md-icon class="md-36" md-font-set="material-icons">account_circle</md-icon>
+                        {{dashboardVm.user}}
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button>
+                                <md-icon md-font-set="material-icons">tune</md-icon>
+                                Profile
+                        </md-menu-item>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="dashboardVm.logout()">
+                                <md-icon md-font-set="material-icons">power_settings_new</md-icon>
+                                Logout
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
+            </div>
+        </md-toolbar>
+
+        <div ui-view></div>
+    </div>
+</div>

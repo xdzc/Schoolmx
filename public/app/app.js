@@ -5,7 +5,7 @@
         .module('mxApp', [
             'ui.router', 'mxApp.auth', 'mxApp.overview', 'ngMaterial',
             'satellizer', 'ngMessages', 'mxApp.shared',
-            'ngProgress'
+            'ngProgress', 'sasrio.angular-material-sidenav'
         ])
         .config(config)
         .constant('mxApi', {
@@ -13,10 +13,10 @@
         }).run(runBlock);
 
     config.$inject = ['mxApi', 'authApi', '$urlRouterProvider', '$locationProvider', '$authProvider',
-        '$mdThemingProvider'];
+        '$mdThemingProvider', 'ssSideNavSectionsProvider'];
 
     function config(mxApi, authApi, $urlRouterProvider, $locationProvider, $authProvider,
-                    $mdThemingProvider) {
+                    $mdThemingProvider, ssSideNavSectionsProvider) {
 
         $authProvider.loginUrl = authApi.BASE_URL + '/authenticate';
         $authProvider.baseUrl = mxApi.URL;
@@ -34,17 +34,57 @@
 
         $mdThemingProvider
             .theme('default')
-            .primaryPalette('purple');
-            //.accentPallete('')
-            //.backgroundPalette('purple');
-            //.warnPaletter('');
+            .primaryPalette('blue', {
+                'default': '700'
+            });
+
+        ssSideNavSectionsProvider.initWithTheme($mdThemingProvider);
 
         $mdThemingProvider.theme('error-toast');
         $mdThemingProvider.theme('success-toast');
 
-        $mdThemingProvider.theme('altTheme')
-            .primaryPalette('blue')
-            .backgroundPalette('purple').dark();
+        ssSideNavSectionsProvider.initWithSections([{
+            id:     'toogle_1',
+            //name:   'DASHBOARD',
+            type:   'heading',
+            children: [{
+                name:   'Toogle 1',
+                type:   'toggle',
+                pages:  [{
+                    id:     'toggle_item_1',
+                    name:   'item 1',
+                    state:  'common.toggle.item1',
+                    icon: 'fa fa-battery-empty',
+                }, {
+                    id:     'toggle_item_2',
+                    name:   'item 2',
+                    icon: 'fa fa-fire',
+                    state:  'common.toggle.item2'
+                }]
+            }]
+        }, {
+            id:         'link_1',
+            name:       'Simple link to Index state',
+            state:      'common.index',
+            type:       'link',
+            hidden: true // show menu ('true' for hide menu)
+        },{
+            id:     'toogle_11',
+            type:   'heading',
+            children: [{
+                name:   'Toogle 1',
+                type:   'toggle',
+                pages:  [{
+                    id:     'toggle_item_11',
+                    name:   'item 1',
+                    state:  'common.toggle.item1'
+                }, {
+                    id:     'toggle_item_21',
+                    name:   'item 2',
+                    state:  'common.toggle.item2'
+                }]
+            }]
+        }]);
     }
 
     runBlock.$inject = ['$rootScope', 'userService', '$state'];

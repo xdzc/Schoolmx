@@ -3,25 +3,18 @@
 
     angular
         .module('mxApp.overview.controllers', [])
-        .controller('DashboardController', DashboardController)
         .controller('OverviewController', OverviewController);
 
-    DashboardController.$inject = ['$mdSidenav'];
-    function DashboardController($mdSidenav) {
-        var dashboardVm = this;
 
-        dashboardVm.toggleMenu = function () {
-            $mdSidenav('left').toggle();
-        }
-    }
-
-    OverviewController.$inject = ['$state', '$mdSidenav'];
-    function OverviewController($state, $mdSidenav) {
+    OverviewController.$inject = ['$controller', 'ssSideNav'];
+    function OverviewController($controller, ssSideNav) {
         //
         var overviewVm = this;
 
-        overviewVm.toggleMenu = function () {
-            $mdSidenav('left').toggle();
-        }
+        ssSideNav.setVisible('link_1', true);
+        ssSideNav.setVisible('toogle_11', false);
+
+        console.log('Overview controller.');
+
     }
 })();
